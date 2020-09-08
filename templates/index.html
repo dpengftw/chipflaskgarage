@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Garage Opener</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=1">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body><div data-role="header">
+<h2>Home Switches</h2><a href="#popupDialog" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-lock ui-btn-icon-left ui-btn-b">Enter PIN</a>
+<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+<div data-role="header" data-theme="a"><h1 id="error">PIN?</h1></div><div role="main" class="ui-content">
+<input type="number" name="pin" id="pin" value="" data-theme="a"><a href="#" onClick="validatePin()" data-history="false" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">Enter</a>
+</div></div></div>
+<div data-role="content" style="width=1280px; overflow:scroll" id="content">
+<a href="#" id="garage" class="ui-btn ui-corner-all ui-state-disabled">Toggle Garage</a></div>
+<script type="text/javascript">
+        $(window).load(function() {
+                 $("#popupDialog").popup("open").popup({ history: false });
+                });
+                function validatePin() {
+                 $.getJSON('/api/passcode/' + $('#pin').val(), function(data) {
+                  if (data.status === 'ok') {
+                   $("#garage").attr("class", "ui-btn ui-corner-all");
+                   $("#garage").attr("onClick", "$.getJSON('/api/garage/open/' + $('#pin').val() )");
+                   $("#popupDialog").popup("close");
+                  }
+                  else {
+                   $("#error").css('color', 'red').html("Incorrect!").fadeOut("slow", function() {
+                        $("#error").css('color', 'black').html("PIN?").fadeIn("fast");
+                   });
+                  }
+                 });
+        }
+</script></body></html>
