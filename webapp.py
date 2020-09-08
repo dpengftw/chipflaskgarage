@@ -6,6 +6,10 @@ import time
 
 app = Flask(__name__)
 
+@app.route('/')
+def index(name=None):
+        return render_template('index.html', name=name)
+
 @app.route('/api/passcode/<int:key>')
 def gatekepper(key):
         if key == 9999:
