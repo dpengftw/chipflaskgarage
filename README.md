@@ -14,7 +14,7 @@ You will need a:
 ```
 sudo apt-get install nginx pip
 
-pip install CHIP-IO uWSGI supervisor
+pip install CHIP-IO uWSGI supervisor Flask
 ```
 3. Clone the base code
 ```
